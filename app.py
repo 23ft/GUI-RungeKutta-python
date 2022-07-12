@@ -7,7 +7,8 @@ from styles.style import *
 import sys
 
 
-""" OBjeto pestañas """
+""" Personal Objets """
+
 
 class SecondTabWidget(QWidget):
     def __init__(self, parent):
@@ -52,7 +53,7 @@ class FirstTabWidget(QWidget):
                                 """)
 
         self.tab2 = QWidget()   # Segunda pestaña, se pasa como widget.
-        #self.tab3 = QWidget()   # Tercera pestaña, se pasa como widget.
+        # self.tab3 = QWidget()   # Tercera pestaña, se pasa como widget.
 
         self.tabs.setFixedWidth(380)
         self.tabs.setStyleSheet("""
@@ -63,7 +64,7 @@ class FirstTabWidget(QWidget):
 
         self.tabs.addTab(self.tab1, "Insertar")
         self.tabs.addTab(self.tab2, "Borrar")
-        #self.tabs.addTab(self.tab3, "Geeks")  # Añadimos pestañas a tabs.
+        # self.tabs.addTab(self.tab3, "Geeks")  # Añadimos pestañas a tabs.
 
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
@@ -72,12 +73,54 @@ class FirstTabWidget(QWidget):
         print("pepe")
 
 
+class BoxModel(QWidget):
+    def __init__(self, referencia, cantidad):
+        super().__init__()
+        """ Creando boxmodel elementos inventario """
+        # self.setAutoFillBackground(True)
+
+        #self.boxdb = QWidget()
+        self.dispose = QVBoxLayout()
+
+        self.dispose.addWidget(QLabel("Imagen"))  # imagen elemento.
+        referencia = ">> " + referencia + "\n>> " + cantidad
+        self.dispose.addWidget(QLabel(referencia))
+        self.setLayout(self.dispose)
+
+
+class SheapDB(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.content = BoxModel("Resistencia 10K", "50")
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.content)
+
+        self.setLayout(self.layout)
+
+        self.setAutoFillBackground(True)
+        self.setFixedSize(QSize(210, 210))
+        self.setStyleSheet("""
+                           background-color: #aaa;
+                           border: 2px ridge #000;
+                           padding: 10px;
+                           """)
+
+
 """ Ventana Principal """
 
 
 class AppMain(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        # Widget that contains the collection of Vertical Box
+        self.widget = QWidget()
+        self.container = QWidget()
+        # The Vertical Box that contains the Horizontal Boxes of  labels and buttons
+        self.vbox = QVBoxLayout()
+        self.box = QHBoxLayout()            # layout primaria.
+
         self.w = 1300
         self.h = 500
 
@@ -88,7 +131,7 @@ class AppMain(QMainWindow):
         self.initUi()
 
     def initUi(self):
-        
+
         self.frame = QFrame(self)
         self.frame.setObjectName("AppMainFrame")
         self.frame.setFrameShape(QFrame.NoFrame)
@@ -96,13 +139,43 @@ class AppMain(QMainWindow):
         self.frame.setAutoFillBackground(True)
         self.frame.setFixedWidth(self.w)
         self.frame.setFixedHeight(self.h)
-        
+
         self.mainbox = QHBoxLayout(self.frame)
-        self.mainbox.addWidget(FirstTabWidget(self.mainbox))
-        self.mainbox.addWidget(SecondTabWidget(self.mainbox))
-        
+        self.first = FirstTabWidget(self.mainbox)
+        self.second = SecondTabWidget(self.mainbox)
+
+        self.objFrame = QFrame(self.first.tab1)
+        self.objFrame.setFrameShape(QFrame.NoFrame)
+        self.objFrame.setFrameShadow(QFrame.Sunken)
+        self.objFrame.setAutoFillBackground(True)
+        self.objFrame.setFixedWidth(300)
+        self.objFrame.setFixedHeight(300)
+        self.objFrame.setStyleSheet("background-color: black")
+        # self.objFrame.move(100,100)
+
+        """ Scroll """
+        topleft = QFrame()
+        topleft.setFrameShape(QFrame.StyledPanel)
+        for i in range(1, 50):
+            object = SheapDB()
+            self.vbox.addWidget(object)
+
+        # seteamos la plantilla en el widget widget.
+        self.widget.setLayout(self.vbox)
+
+        """ Gestion scrollbar """
+        # Scroll Area Properties
+        # Scroll Area which contains the widgets, set as the centralWidget
+        self.scroll = QScrollArea(self.second.tab1)
+        self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setWidget(self.widget)
+
+        self.mainbox.addWidget(self.first)
+        self.mainbox.addWidget(self.second)
+
         self.setCentralWidget(self.frame)
-        
 
 
 """ Ventana Login """
