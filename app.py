@@ -9,8 +9,7 @@ import sys
 
 """ OBjeto pestañas """
 
-
-class MyTabWidget(QWidget):
+class SecondTabWidget(QWidget):
     def __init__(self, parent):
         super().__init__()
         self.layout = QVBoxLayout(self)
@@ -25,24 +24,46 @@ class MyTabWidget(QWidget):
         self.tab2 = QWidget()   # Segunda pestaña, se pasa como widget.
         self.tab3 = QWidget()   # Tercera pestaña, se pasa como widget.
 
-        self.tabs.resize(300, 200)
+        self.tabs.setFixedWidth(800)
         self.tabs.setStyleSheet("""
                                     background-color:#eee;
                                     margin: 5px;
                                 
                                 """)
 
-        self.tabs.addTab(self.tab1, "Geeks")
-        self.tabs.addTab(self.tab2, "For")
-        self.tabs.addTab(self.tab3, "Geeks")  # Añadimos pestañas a tabs.
+        self.tabs.addTab(self.tab1, "Resisencias")
+        self.tabs.addTab(self.tab2, "Transistores")
+        self.tabs.addTab(self.tab3, "Modulos-PCB")  # Añadimos pestañas a tabs.
 
-        # creacion boton como hijo de tab1.
-        self.btn_menu = QPushButton(parent=self.tab1, text="Connection")
-        self.btn_menu.setObjectName("btn_menu")
-        self.btn_menu.setStyleSheet(btn_menu_css)
-        self.btn_menu.setGeometry(QRect(0, 0, 100, 40))
-        self.btn_menu.setCheckable(True)
-        self.btn_menu.clicked.connect(self.menuHand)
+        self.layout.addWidget(self.tabs)
+        self.setLayout(self.layout)
+
+
+class FirstTabWidget(QWidget):
+    def __init__(self, parent):
+        super().__init__()
+        self.layout = QVBoxLayout(self)
+
+        self.tabs = QTabWidget()  # Objeto tabwidgte permite tener pestañas.
+        self.tab1 = QWidget()    # Primera pestaña, se pasa como widget.
+        self.tab1.setStyleSheet("""
+                                    background-color: gray;
+
+                                """)
+
+        self.tab2 = QWidget()   # Segunda pestaña, se pasa como widget.
+        #self.tab3 = QWidget()   # Tercera pestaña, se pasa como widget.
+
+        self.tabs.setFixedWidth(380)
+        self.tabs.setStyleSheet("""
+                                    background-color:#eee;
+                                    margin: 5px;
+                                
+                                """)
+
+        self.tabs.addTab(self.tab1, "Insertar")
+        self.tabs.addTab(self.tab2, "Borrar")
+        #self.tabs.addTab(self.tab3, "Geeks")  # Añadimos pestañas a tabs.
 
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
@@ -57,16 +78,31 @@ class MyTabWidget(QWidget):
 class AppMain(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.w = 1000
+        self.w = 1300
         self.h = 500
 
         # self.setAutoFillBackground(True)
         self.setFixedSize(self.w, self.h)
         #self.setGeometry(500, 200, 300, 250)
         self.setStyleSheet(main_css)
-        self.mainbox = QVBoxLayout()
+        self.initUi()
 
-        self.setCentralWidget(MyTabWidget(self))
+    def initUi(self):
+        
+        self.frame = QFrame(self)
+        self.frame.setObjectName("AppMainFrame")
+        self.frame.setFrameShape(QFrame.NoFrame)
+        self.frame.setFrameShadow(QFrame.Sunken)
+        self.frame.setAutoFillBackground(True)
+        self.frame.setFixedWidth(self.w)
+        self.frame.setFixedHeight(self.h)
+        
+        self.mainbox = QHBoxLayout(self.frame)
+        self.mainbox.addWidget(FirstTabWidget(self.mainbox))
+        self.mainbox.addWidget(SecondTabWidget(self.mainbox))
+        
+        self.setCentralWidget(self.frame)
+        
 
 
 """ Ventana Login """
@@ -179,39 +215,38 @@ class AppLogin(QMainWindow):
         self.lineEditPass.setFixedWidth(238)
         self.lineEditPass.setFixedHeight(26)
         self.lineEditPass.move(40, 1)
-        
-        # Buttons   
-        
+
+        # Buttons
+
         self.button_submit = QPushButton("Submit", self)
         self.button_submit.setObjectName("button_submit")
         self.button_submit.setFixedWidth(135)
         self.button_submit.setFixedHeight(28)
         self.button_submit.move(60, 286)
-        
-        self.button_submit.clicked.connect(self.submit) 
-        
-        
+
+        self.button_submit.clicked.connect(self.submit)
+
         self.button_exit = QPushButton("Exit", self)
         self.button_exit.setObjectName("button_exit")
         self.button_exit.setFixedWidth(135)
         self.button_exit.setFixedHeight(28)
-        self.button_exit.move(205, 286) 
-        
+        self.button_exit.move(205, 286)
+
         self.button_exit.clicked.connect(self.exit)
-        
-        
-    """ Callback function for the buttons"""    
+
+    """ Callback function for the buttons"""
 
     def submit(self):
         # corroborar usuarios.
-        #self.close()            # close hace uso de destroy.
-        #self.mainScreen.show()  # mostramos ventana nueva.
-        
-        print(self.lineEditUsuario.text())
+        self.close()            # close hace uso de destroy.
+        self.mainScreen.show()  # mostramos ventana nueva.
+
+        # print(self.lineEditUsuario.text())
 
     def exit(self):
         print("Exit")
-        self.close()    
+        self.close()
+
 
 if __name__ == '__main__':
     Appx = QApplication()
