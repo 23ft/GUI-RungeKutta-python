@@ -1,3 +1,12 @@
+"""
+  >> Styles for Control Inventary App with mysql and Pyside6
+
+
+  >> page colors: http://www.creativecolorschemes.com/resources/free-color-schemes/gray-tone-color-scheme.shtml
+
+"""
+
+
 btn_menu_css = """
     #btn_menu{
         padding: 5px;
@@ -26,14 +35,14 @@ btn_menu_css = """
 
 main_css = """
     
-    background: qlineargradient( 
+    /*background: qlineargradient( 
                                 x1:0, 
                                 y1:0, 
                                 x2:0, 
                                 y2:1,
-                                stop:0 rgb(125, 125, 125),
-                                stop:1.0 rgb(180, 180, 180));
-
+                                stop:0 rgb(0, 0, 0),
+                                stop:1.0 rgb(30, 30, 30));*/
+    background-color: #AD85BA;
 """
 
 login_css = """

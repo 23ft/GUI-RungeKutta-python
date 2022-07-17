@@ -5,7 +5,7 @@ from PySide6.QtGui import QLinearGradient, QPalette, QColor, QIcon, QPixmap, QFo
 from styles.style import *
 import sys
 
-""" Personal Objets """
+""" App Objets - App Widgets """
 
 
 class SecondTabWidget(QWidget):
@@ -18,21 +18,53 @@ class SecondTabWidget(QWidget):
         self.tabs = QTabWidget()  # Objeto tabwidgte permite tener pestañas.
         self.tabs.setFixedWidth(800)
         self.tabs.setStyleSheet("""
-                                    background-color:#eee;
-                                    
+                                    QTabWidget::pane { /* The tab widget frame */
+                                        border: 1px solid #C2C7CB;
+                                        position: absolute;
+                                        top: -0.5em;
+                                        
+                                    }
+
+                                    QTabWidget::tab-bar {
+                                        /*alignment: center;*/
+                                     }
+
+                                     /* Style the tab using the tab sub-control. Note that
+                                         it reads QTabBar _not_ QTabWidget */
+                                     QTabBar::tab {
+                                         background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                                                     stop: 0 #E1E1E1, stop: 0.4 #DDDDDD,
+                                                                     stop: 0.5 #D8D8D8, stop: 1.0 #D3D3D3);
+                                         border: 2px solid #B2B2B2;
+                                         border-bottom-color: #B2B2B2; /* same as the pane color */
+                                         border-top-left-radius: 4px;
+                                         border-top-right-radius: 4px;
+                                         min-width: 8ex;
+                                         padding: 2px;
+                                     }
+
+                                     QTabBar::tab:selected, QTabBar::tab:hover {
+                                         /*background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                                                     stop: 0 #fafafa, stop: 0.4 #f4f4f4,
+                                                                     stop: 0.5 #e7e7e7, stop: 1.0 #fafafa);*/
+                                        background-color: #B2B2B2;                                                                     
+                                     }
+
+                                     QTabBar::tab:selected {
+                                         border-color: #B2B2B2;
+                                         border-bottom-color: #AD85BA; /* same as pane color */
+                                     }
 
                                 """)
 
         # pestaña 1
         self.tab1 = QFrame(self)    # Primera pestaña, se pasa como widget.
-        self.tab1.setFrameShape(QFrame.NoFrame)
-        self.tab1.setFrameShadow(QFrame.Sunken)
+        # self.tab1.setFrameShape(QFrame.NoFrame)
+        # self.tab1.setFrameShadow(QFrame.Sunken)
         self.tab1.setAutoFillBackground(True)
         self.tab1.setStyleSheet("""
-                                    background-color: gray;
+                                    background-color: #B2B2B2;
                                     
-                                    
-
                                 """)
 
         # pestaña 2
@@ -61,7 +93,7 @@ class FirstTabWidget(QWidget):
         self.tabs = QTabWidget()  # Objeto tabwidgte permite tener pestañas.
         self.tab1 = QFrame()    # Primera pestaña, se pasa como widget.
         self.tab1.setStyleSheet("""
-                                    background-color: gray;
+                                    
 
                                 """)
 
@@ -70,8 +102,8 @@ class FirstTabWidget(QWidget):
 
         self.tabs.setFixedWidth(380)
         self.tabs.setStyleSheet("""
-                                    background-color:#eee;
-                                    margin: 5px;
+                                    background-color: #B2B2B2;
+                                    
 
                                 """)
 
@@ -135,81 +167,108 @@ class SheapDB(QWidget):
                            """)
 
 
-""" Ventana Principal """
+""" App Widnows """
 
 
 class AppMain(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Control Inventary - 23ft")
 
-        # Widget contains the collection of Vertical Box
-        self.widget_db = QWidget()          # widget for storage grid layout.        
+        
+        self.widget_db = QWidget()          # widget for storage grid layout.
         self.grid_layout = QGridLayout()    # grid layout for data base registers.
-        
-        self.rows = None        # rows in grid layout.        
-        self.Columns = None     # columns in grid layout.   
-        self.w = 1300           # width window.
-        self.h = 600            # height window.
-        
+
+        self.rows = None        # rows in grid layout.
+        self.Columns = None     # columns in grid layout.
+        self.w = 1240           # width window.
+        self.h = 480            # height window.
+
         self.setFixedSize(self.w, self.h)   # config initial size.
         self.setStyleSheet(main_css)        # define style sheet
-        
+
         """ Build Widget """
         self.initUi()
 
     def initUi(self):
 
-        # div principal.
-        self.frame = QFrame(self)
+        """
+            <MainDiv>
+            Principal Div Block in AppMain
+        """
+        self.frame = QFrame(self)               #frame Main.
         self.frame.setObjectName("AppMainFrame")
-        self.frame.setFrameShape(QFrame.NoFrame)
-        self.frame.setFrameShadow(QFrame.Sunken)
+        #self.frame.setFrameShape(QFrame.NoFrame)
+        #self.frame.setFrameShadow(QFrame.Sunken)
         self.frame.setAutoFillBackground(True)
         self.frame.setFixedWidth(self.w)
         self.frame.setFixedHeight(self.h)
 
-        # layout, first block of tabs and second block of tabs.
-        self.mainbox = QHBoxLayout(self.frame)
+        
+        self.mainbox = QHBoxLayout(self.frame)  # layout, first block of tabs and second block of tabs.
         self.first = FirstTabWidget()           # first block of tabs
         self.second = SecondTabWidget()         # second block of tabs
-
-        self.objFrame = QFrame(self.first.tab1)
+        """ 
+            <FirstTabWidget>
+            Actions Data Base 
+        """
+        self.frame_insert = QHBoxLayout(self.first.tab1)
+        self.objFrame = QFrame()
         self.objFrame.setFrameShape(QFrame.NoFrame)
         self.objFrame.setFrameShadow(QFrame.Sunken)
         self.objFrame.setAutoFillBackground(True)
-        self.objFrame.setFixedWidth(300)
-        self.objFrame.setFixedHeight(300)
         self.objFrame.setStyleSheet("background-color: black")
+        self.frame_insert.addWidget(self.objFrame)
 
-        """ Data Base View - Objet """
+        
+        """ 
+            <SecondTabWidget> 
+            Data Base View - Objet 
+        """
         # Ajustando grilla para visualizacion registros DB en modo GRID.
         for row in range(0, 50, 2):
             self.grid_layout.setRowMinimumHeight(row, 25)
             for column in range(0, 7, 2):
                 self.grid_layout.setColumnMinimumWidth(column, 25)
-        
-        # Insertando registros de base de datos.                
+
+        # Insertando registros de base de datos.
         for row in range(1, 50, 2):
-            for column in range(1, 7, 2):
-                object = BoxModel("Resistencia 10K", "50")          # BoxModel is objet for data base register.
-                self.grid_layout.addWidget(object, row, column)     # Add BoxModel with data base register in the grid.
+            for column in range(1, 9, 2):
+                object = BoxModel("Resistencia 10K", "50")      # BoxModel is objet for data base register.
+                self.grid_layout.addWidget(object, row, column) # Add BoxModel with data base register in the grid.
 
         # seteamos la plantilla en el widget widget.
         self.widget_db.setLayout(self.grid_layout)
 
-        """ Gestion scrollbar """
-
-        self.scroll_layout = QHBoxLayout(self.second.tab1)                 # layout for scrollArea, parent is tab1. 
+        """ 
+            <ScrollArea>
+            ScrollArea for view data base registrers
+        """        
+        self.scroll_layout = QHBoxLayout(self.second.tab1)                 # layout for scrollArea, parent is tab1.        
         self.scroll_db = QScrollArea()                                     # instancia QscrollArea
         self.scroll_db.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)    # enable vertical scrollbar
-        self.scroll_db.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff) # enable horizontal scrollbar
+        self.scroll_db.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)  # enable horizontal scrollbar 
         self.scroll_db.setWidgetResizable(True)                            # enable resizable
         self.scroll_db.setWidget(self.widget_db)                           # wdiget dentro de ScrollArea
+        self.scroll_db.setStyleSheet("""
+                                     /* ScrollBar */
+                                        
+                                        
+                                        /* ScrollArea */
+                                     
+                                        QScrollArea {
+                                            background-color: #B2B2B2;
+                                            border: 0px;
+                                        }
+                                        
+                                        
+                                     """)               # Dentro de ScrollArea encontramos objetos como QscrollBar.
 
-        self.scroll_layout.addWidget(self.scroll_db)                       # add scrollarea to scroll layout.
+        
+        self.scroll_layout.addWidget(self.scroll_db)    # add scrollarea to scroll layout.
 
         """ Add widgets in main window """
-        self.mainbox.addWidget(self.first)      # add first widget in mainbox layout.                                  
+        self.mainbox.addWidget(self.first)      # add first widget in mainbox layout.
         self.mainbox.addWidget(self.second)     # add second widget in mainbox layout.
         self.setCentralWidget(self.frame)       # set central widget.
 
@@ -223,7 +282,7 @@ class AppLogin(QMainWindow):
         self.w = 400
         self.h = 380
         self.setFixedSize(self.w, self.h)
-        self.setWindowTitle("Order Components DB")
+        self.setWindowTitle("Control Inventary - 23ft")
 
         # self.setWindowOpacity(0.5)
         # self.setStyleSheet(main_css)
