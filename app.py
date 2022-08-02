@@ -212,14 +212,27 @@ class AppMain(QMainWindow):
             <FirstTabWidget>
             Actions Data Base 
         """
-        self.frame_insert = QHBoxLayout(self.first.tab1)
-        self.objFrame = QFrame()
-        self.objFrame.setFrameShape(QFrame.NoFrame)
-        self.objFrame.setFrameShadow(QFrame.Sunken)
-        self.objFrame.setAutoFillBackground(True)
-        self.objFrame.setStyleSheet("background-color: black")
-        self.frame_insert.addWidget(self.objFrame)
+        self.frame_insert = QVBoxLayout(self.first.tab1)
+        
+        #self.objFrame = QFrame()
+        #self.objFrame.setFrameShape(QFrame.NoFrame)
+        #self.objFrame.setFrameShadow(QFrame.Sunken)
+        #self.objFrame.setAutoFillBackground(True)
+        #self.objFrame.setStyleSheet("background-color: #B2B2B2")
+        #self.frame_insert.addWidget(self.objFrame)
+        
+        self.label_pass = QLabel("Categoria:")
+        self.label_pass.move(30, 4)
+        
+        self.comboBoxCuenta = QComboBox()
+        self.comboBoxCuenta.addItems(["Resistenica", "Semiconductor", "Modulo Framework - PCB"])
+        self.comboBoxCuenta.setCurrentIndex(-1)
+        self.comboBoxCuenta.setFixedWidth(280)
+        self.comboBoxCuenta.setFixedHeight(26)
+        self.comboBoxCuenta.move(30, 30)
 
+        self.frame_insert.addWidget(self.label_pass)
+        self.frame_insert.addWidget(self.comboBoxCuenta)
         
         """ 
             <SecondTabWidget> 
