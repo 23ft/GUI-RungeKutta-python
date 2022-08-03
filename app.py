@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import (QWidget, QSlider, QLineEdit, QLabel, QPushButton, QScrollArea, QApplication,
-                               QHBoxLayout, QVBoxLayout, QMainWindow, QFrame, QMenu, QTabWidget, QComboBox, QGridLayout)
+                               QHBoxLayout, QVBoxLayout, QBoxLayout, QMainWindow, QFrame, QMenu, QTabWidget, QComboBox, QGridLayout)
 from PySide6.QtCore import Qt, QSize, QPointF, QRect, QMargins
 from PySide6.QtGui import QLinearGradient, QPalette, QColor, QIcon, QPixmap, QFont
+
 from styles.style import *
 import sys
 
@@ -91,19 +92,18 @@ class FirstTabWidget(QWidget):
         self.layout = QVBoxLayout(self)
 
         self.tabs = QTabWidget()  # Objeto tabwidgte permite tener pestañas.
-        self.tab1 = QFrame()    # Primera pestaña, se pasa como widget.
-        self.tab1.setStyleSheet("""
-                                    
-
-                                """)
+        
+        
+        self.tab1 = QWidget()    # Primera pestaña, se pasa como widget.
+        self.tab1.setObjectName("tab1_firts")
+        
 
         self.tab2 = QWidget()   # Segunda pestaña, se pasa como widget.
         # self.tab3 = QWidget()   # Tercera pestaña, se pasa como widget.
 
-        self.tabs.setFixedWidth(380)
+        #self.tabs.setFixedWidth(380)
         self.tabs.setStyleSheet("""
                                     background-color: #B2B2B2;
-                                    
 
                                 """)
 
@@ -208,32 +208,65 @@ class AppMain(QMainWindow):
         self.mainbox = QHBoxLayout(self.frame)  # layout, first block of tabs and second block of tabs.
         self.first = FirstTabWidget()           # first block of tabs
         self.second = SecondTabWidget()         # second block of tabs
+        
+        self.first.tabs.setFixedWidth(300)      
         """ 
             <FirstTabWidget>
             Actions Data Base 
         """
-        self.frame_insert = QVBoxLayout(self.first.tab1)
+        self.layout_tools = QVBoxLayout()
+        self.pepe = QBoxLayout()
+        self.layout_tools.setContentsMargins(0,0,0,0)   # quitar magins del layout.
+        self.layout_tools.setAlignment(Qt.AlignVCenter)
         
-        #self.objFrame = QFrame()
-        #self.objFrame.setFrameShape(QFrame.NoFrame)
-        #self.objFrame.setFrameShadow(QFrame.Sunken)
-        #self.objFrame.setAutoFillBackground(True)
+        
+        self.first_frame = QFrame()
+        self.second_frame = QFrame()
+        self.second_frame.setObjectName("pepe")
+        self.second_frame.setFixedWidth(300)
+        self.second_frame.setStyleSheet("""
+                                            #pepe{
+                                                margin: 0px;
+
+                                            }
+                                        """)
+        
+        self.second_frame.setFrameShape(QFrame.NoFrame)
+        self.second_frame.setFrameShadow(QFrame.Sunken)
+        self.second_frame.setAutoFillBackground(True)
+        self.second_frame.width()
         #self.objFrame.setStyleSheet("background-color: #B2B2B2")
         #self.frame_insert.addWidget(self.objFrame)
         
-        self.label_pass = QLabel("Categoria:")
-        self.label_pass.move(30, 4)
+        self.label_pass = QLabel("Categoria:", self.first_frame)
+        #self.label_pass.move(30, 4)
         
-        self.comboBoxCuenta = QComboBox()
+        self.comboBoxCuenta = QComboBox(self.first_frame)
         self.comboBoxCuenta.addItems(["Resistenica", "Semiconductor", "Modulo Framework - PCB"])
-        self.comboBoxCuenta.setCurrentIndex(-1)
-        self.comboBoxCuenta.setFixedWidth(280)
-        self.comboBoxCuenta.setFixedHeight(26)
-        self.comboBoxCuenta.move(30, 30)
-
-        self.frame_insert.addWidget(self.label_pass)
-        self.frame_insert.addWidget(self.comboBoxCuenta)
+        #self.comboBoxCuenta.setCurrentIndex(-1)
+        #self.comboBoxCuenta.setMinimumWidth(280)
+        #self.comboBoxCuenta.setMinimumHeight(26)
+        self.comboBoxCuenta.move(0, 30)
         
+        self.button_insert = QPushButton("Insert", self.second_frame)
+        self.button_insert.setObjectName("button_insert")
+        self.button_insert.setFixedWidth(135)
+        self.button_insert.setFixedHeight(28)
+        self.button_insert.move(int(self.second_frame.width() / 2) - int(self.button_insert.width() / 2), 0)
+
+        
+        
+
+        #self.frame_insert.addWidget(self.label_pass)
+        #self.frame_insert.addWidget(self.comboBoxCuenta)
+        #self.layout_tools.addStretch()
+        self.layout_tools.addWidget(self.first_frame)
+        self.layout_tools.addWidget(self.second_frame)
+        self.first.tab1.setLayout(self.layout_tools)
+        
+        
+        
+        #self.layout_tools.addStretch()
         """ 
             <SecondTabWidget> 
             Data Base View - Objet 
@@ -284,6 +317,8 @@ class AppMain(QMainWindow):
         self.mainbox.addWidget(self.first)      # add first widget in mainbox layout.
         self.mainbox.addWidget(self.second)     # add second widget in mainbox layout.
         self.setCentralWidget(self.frame)       # set central widget.
+        
+        
 
 
 """ Ventana Login """
