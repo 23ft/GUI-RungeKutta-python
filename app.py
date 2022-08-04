@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt, QSize, QPointF, QRect, QMargins
 from PySide6.QtGui import QLinearGradient, QPalette, QColor, QIcon, QPixmap, QFont
 
 from styles.style import *
+from lib.database.driver import *
 import sys
 
 """ App Objets - App Widgets """
@@ -173,20 +174,28 @@ class SheapDB(QWidget):
 class AppMain(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Control Inventary - 23ft")
-
-        
+        """ Propieties AppMain """
         self.widget_db = QWidget()          # widget for storage grid layout.
         self.grid_layout = QGridLayout()    # grid layout for data base registers.
-
         self.rows = None        # rows in grid layout.
         self.Columns = None     # columns in grid layout.
         self.w = 1240           # width window.
         self.h = 480            # height window.
-
+        
+        """ Configuration AppMain"""
+        self.setWindowTitle("Control Inventary - 23ft")
         self.setFixedSize(self.w, self.h)   # config initial size.
         self.setStyleSheet(main_css)        # define style sheet
-
+        
+        """ Database Configuration """
+        self.port=6603,
+        self.host="198.58.99.52",
+        self.user="root",
+        self.password="8;Ud1V.7jm2_C#&y.9X?NzZ0RdM_t2j2"
+        
+        self.streamDB = databaseDrive(self.port, self.host, self.user,self.password)
+         
+        
         """ Build Widget """
         self.initUi()
 
