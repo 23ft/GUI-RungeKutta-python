@@ -5,7 +5,20 @@
   >> page colors: http://www.creativecolorschemes.com/resources/free-color-schemes/gray-tone-color-scheme.shtml
 
 """
+label_user = """
+font-size: 20px; 
+qproperty-alignment: AlignJustify; 
+font-family: 'Kanit', sans-serif;
+font-family: 'Oswald', sans-serif;
+font-weight: bold;
 
+"""
+
+entrys = """
+background-color: white;
+
+
+"""
 
 btn_menu_css = """
     #btn_menu{
